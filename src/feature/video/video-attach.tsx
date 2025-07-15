@@ -25,6 +25,8 @@ import Draggable from './components/draggable';
 import { useSpotlightVideo } from './hooks/useSpotlightVideo';
 import RemoteCameraControlPanel from './components/remote-camera-control';
 import { isAndroidOrIOSBrowser } from '../../utils/platform';
+import './video.scss';
+
 
 interface ExtendedParticipant extends Participant {
   spotlighted?: boolean;
@@ -37,25 +39,50 @@ const VideoContainer = () => {
   const { page, pageSize, totalPage, setPage } = usePagination(zmClient, preferPageCount);
   const shareViewRef = useRef<{ selfShareRef: HTMLCanvasElement | HTMLVideoElement | null }>(null);
 
-  const videoPlayerListRef = useRef<Record<string, VideoPlayer>>({});
-  const [isRecieveSharing, setIsRecieveSharing] = useState(false);
-  const [spotlightUsers, setSpotlightUsers] = useState<number[]>([]);
-  const [participants, setParticipants] = useState<ExtendedParticipant[]>([]);
-  const [currentPageParticipants, setCurrentPageParticipants] = useState<Participant[]>([]);
-  const [currentUser, setCurrentUser] = useState<Participant>(zmClient.getCurrentUserInfo());
-  const [subscribers, setSubscribers] = useState<number[]>([]);
-  const activeVideo = useActiveVideo(zmClient);
-  const avatarActionState = useAvatarAction(zmClient, participants, true);
-  const networkQuality = useNetworkQuality(zmClient);
-  const previousSubscribers = usePrevious(subscribers);
-  const aspectRatio = useVideoAspect(zmClient);
-  const optionsOfVideoResolution = [
-    { label: '1080P', value: VideoQuality.Video_1080P },
-    { label: '720P', value: VideoQuality.Video_720P },
-    { label: '360P', value: VideoQuality.Video_360P },
-    { label: '180P', value: VideoQuality.Video_180P },
-    { label: '90P', value: VideoQuality.Video_90P }
-  ];
+  const getGridTemplateClass = (count: number, isMobile: boolean) => {
+  if (isMobile) {
+    if (count <= 1) return 'grid-1x1';
+    if (count === 2) return 'grid-1x2';
+    if (count <= 4) return 'grid-2x2';
+    if (count <= 6) return 'grid-3x2';
+    if (count <= 8) return 'grid-4x2';
+    return 'grid-1x5';
+  } else {
+    if (count <= 1) return 'grid-1x1';
+    if (count === 2) return 'grid-1x2';
+    if (count === 3) return 'grid-1x3';
+    if (count === 4) return 'grid-2x2';
+    if (count <= 6) return 'grid-2x3';
+    return 'grid-3x3';
+  }
+};
+
+
+const videoPlayerListRef = useRef<Record<string, VideoPlayer>>({});
+const [isRecieveSharing, setIsRecieveSharing] = useState(false);
+const [spotlightUsers, setSpotlightUsers] = useState<number[]>([]);
+const [participants, setParticipants] = useState<ExtendedParticipant[]>([]);
+const [currentPageParticipants, setCurrentPageParticipants] = useState<Participant[]>([]);
+const [subscribers, setSubscribers] = useState<number[]>([]);
+const activeVideo = useActiveVideo(zmClient);
+const avatarActionState = useAvatarAction(zmClient, participants, true);
+const networkQuality = useNetworkQuality(zmClient);
+const previousSubscribers = usePrevious(subscribers);
+const [currentUser, setCurrentUser] = useState<Participant>(zmClient.getCurrentUserInfo());
+const aspectRatio = useVideoAspect(zmClient);
+const optionsOfVideoResolution = [
+  { label: '1080P', value: VideoQuality.Video_1080P },
+  { label: '720P', value: VideoQuality.Video_720P },
+  { label: '360P', value: VideoQuality.Video_360P },
+  { label: '180P', value: VideoQuality.Video_180P },
+  { label: '90P', value: VideoQuality.Video_90P }
+];
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+const gridClass = useMemo(() => {
+  const participantCount = currentPageParticipants.length + (currentUser ? 1 : 0);
+  return getGridTemplateClass(participantCount, isMobile);
+}, [currentPageParticipants.length, currentUser, isMobile]);
 
   useSpotlightVideo(zmClient, mediaStream, (p) => {
     setSpotlightUsers(p.map((user) => user.userId));
@@ -135,22 +162,12 @@ const VideoContainer = () => {
     },
     [videoPlayerListRef, mediaStream]
   );
-  const gridColumns = useMemo(() => {
-    if (isRecieveSharing) return 1;
-    if (spotlightUsers.length) {
-      return Math.sqrt(pageSize) * 2;
-    }
-    return Math.sqrt(pageSize);
-  }, [spotlightUsers, isRecieveSharing, pageSize]);
-  const gridRows = useMemo(() => {
-    if (isRecieveSharing) {
-      return pageSize;
-    }
-    if (spotlightUsers.length) {
-      return Math.sqrt(pageSize) * 2;
-    }
-    return Math.sqrt(pageSize);
-  }, [spotlightUsers, isRecieveSharing, pageSize]);
+  
+const participantsToRender = [
+  ...(currentUser ? [currentUser] : []),
+  ...currentPageParticipants
+];
+
   return (
     <div className="viewport">
       <ShareView ref={shareViewRef} onRecieveSharingChange={setIsRecieveSharing} />
@@ -160,35 +177,9 @@ const VideoContainer = () => {
           width: isAndroidOrIOSBrowser() ? '50vw' : '30vw'
         }}
       > */}
-      <Draggable
-        className="unified-self-view"
-        customstyle={{
-          width: isAndroidOrIOSBrowser() ? '50vw' : '30vw'
-        }}
-      >
-        <video-player-container class="unified-self-view-container">
-          <AvatarActionContext.Provider value={avatarActionState}>
-            {currentUser?.bVideoOn && (
-              <div>
-                <video-player
-                  class="video-player"
-                  ref={(element) => {
-                    setVideoPlayerRef(currentUser?.userId, element);
-                  }}
-                />
-              </div>
-            )}
-            {currentUser && (
-              <Avatar
-                participant={currentUser as Participant}
-                key={currentUser?.userId as number}
-                isActive={false}
-                networkQuality={networkQuality[`${currentUser?.userId}`]}
-              />
-            )}
-          </AvatarActionContext.Provider>
-        </video-player-container>
-      </Draggable>
+      \
+       
+      
       {/* </div> */}
 
       <div
@@ -198,14 +189,9 @@ const VideoContainer = () => {
       >
         <video-player-container class="video-container-wrap">
           <AvatarActionContext.Provider value={avatarActionState}>
-            <ul
-              className="user-list"
-              style={{
-                gridTemplateColumns: `repeat(${gridColumns}, minmax(128px, 1fr))`,
-                gridTemplateRows: `repeat(${gridRows},minmax(72px, 1fr))`
-              }}
-            >
-              {currentPageParticipants.map((user) => {
+            <ul className={`user-list ${gridClass}`}>
+
+              {participantsToRender.map((user) => {
                 return (
                   <div
                     className={classnames('video-cell', { 'video-cell-spotlight': (user as any).spotlighted })}

@@ -50,6 +50,8 @@ interface AppProps {
     useVideoPlayer?: string;
   };
 }
+const urlParams = new URLSearchParams(window.location.search);
+const role = Number(urlParams.get('role') ?? '0'); // default to 0 if missing
 const mediaShape = {
   audio: {
     encode: false,
@@ -180,7 +182,7 @@ function App(props: AppProps) {
       });
       try {
         setLoadingText('Joining the session...');
-        await zmClient.join(topic, signature, name, password).catch((e) => {
+        await zmClient.join(topic, signature, name, password, role).catch((e) => {
           console.log(e);
         });
         const stream = zmClient.getMediaStream();
@@ -189,6 +191,7 @@ function App(props: AppProps) {
         setIsLoading(false);
       } catch (e: any) {
         setIsLoading(false);
+        hasInitialized.current = true;
         message.error(e.reason);
       }
     };
@@ -262,7 +265,7 @@ function App(props: AppProps) {
   const onLeaveOrJoinSession = useCallback(async () => {
     if (status === 'closed') {
       setIsLoading(true);
-      await zmClient.join(topic, signature, name, password);
+      await zmClient.join(topic, signature, name, password, role);
       setIsLoading(false);
     } else if (status === 'connected') {
       await zmClient.leave();
@@ -270,6 +273,7 @@ function App(props: AppProps) {
     }
   }, [zmClient, status, topic, signature, name, password]);
   useEffect(() => {
+    if (hasInitialized.current) return;
     zmClient.on('connection-change', onConnectionChange);
     zmClient.on('media-sdk-change', onMediaSDKChange);
     return () => {

@@ -9,31 +9,32 @@ import ZoomContext from './context/zoom-context';
 import { devConfig } from './config/dev';
 import { b64DecodeUnicode, generateVideoToken } from './utils/util';
 
-let meetingArgs: any = Object.fromEntries(new URLSearchParams(location.search));
-// Add enforceGalleryView to turn on the gallery view without SharedAddayBuffer
-if (!meetingArgs.sdkKey || !meetingArgs.topic || !meetingArgs.name || !meetingArgs.signature) {
-  meetingArgs = { ...devConfig, ...meetingArgs };
-}
+// Merge query params first — this preserves URL-provided role and signature
+let meetingArgs: any = {
+  ...devConfig,
+  ...Object.fromEntries(new URLSearchParams(location.search))
+};
 
+// Properly decode select base64 fields
 if (meetingArgs.web && meetingArgs.web !== '0') {
   ['topic', 'name', 'password', 'sessionKey', 'userIdentity'].forEach((field) => {
     if (Object.hasOwn(meetingArgs, field)) {
       try {
         meetingArgs[field] = b64DecodeUnicode(meetingArgs[field]);
       } catch (e) {
-        console.log('ingore base64 decode', field, meetingArgs[field]);
+        console.log('ignore base64 decode', field, meetingArgs[field]);
       }
     }
   });
-  if (meetingArgs.role) {
-    meetingArgs.role = parseInt(meetingArgs.role, 10);
-  } else {
-    meetingArgs.role = 1;
-  }
 }
-// enforce use <video> tag render video, https://marketplacefront.zoom.us/sdk/custom/web/modules/Stream.html#attachVideo
+
+// Parse `role` safely — default to 0 (participant) if not present
+meetingArgs.role = parseInt(meetingArgs.role ?? '0', 10);
+
+// Force video player mode to use <video> elements
 meetingArgs.useVideoPlayer = 1;
 
+// Normalize numeric flags
 ['enforceGalleryView', 'enforceVB', 'cloud_recording_option', 'cloud_recording_election'].forEach((field) => {
   if (Object.hasOwn(meetingArgs, field)) {
     try {
@@ -43,6 +44,7 @@ meetingArgs.useVideoPlayer = 1;
     }
   }
 });
+
 if (meetingArgs?.telemetry_tracking_id) {
   try {
     meetingArgs.telemetry_tracking_id = b64DecodeUnicode(meetingArgs.telemetry_tracking_id);
@@ -51,6 +53,7 @@ if (meetingArgs?.telemetry_tracking_id) {
   meetingArgs.telemetry_tracking_id = '';
 }
 
+// Fallback: generate signature locally if not provided
 if (!meetingArgs.signature && meetingArgs.sdkSecret && meetingArgs.topic) {
   meetingArgs.signature = generateVideoToken(
     meetingArgs.sdkKey,
@@ -58,13 +61,14 @@ if (!meetingArgs.signature && meetingArgs.sdkSecret && meetingArgs.topic) {
     meetingArgs.topic,
     meetingArgs.sessionKey,
     meetingArgs.userIdentity,
-    Number(meetingArgs.role ?? 1),
+    meetingArgs.role,
     meetingArgs.cloud_recording_option,
     meetingArgs.cloud_recording_election,
     meetingArgs.telemetry_tracking_id
   );
+
   console.log('=====================================');
-  console.log('meetingArgs', meetingArgs);
+  console.log('🔐 Signature was generated on the fly. Full meetingArgs:', meetingArgs);
 
   const urlArgs: any = {
     topic: meetingArgs.topic,
@@ -72,7 +76,7 @@ if (!meetingArgs.signature && meetingArgs.sdkSecret && meetingArgs.topic) {
     password: meetingArgs.password,
     sessionKey: meetingArgs.sessionKey,
     userIdentity: meetingArgs.userIdentity,
-    role: meetingArgs.role || 1,
+    role: meetingArgs.role,
     cloud_recording_option: meetingArgs.cloud_recording_option || '',
     cloud_recording_election: meetingArgs.cloud_recording_election || '',
     telemetry_tracking_id: meetingArgs.telemetry_tracking_id || '',
@@ -80,9 +84,16 @@ if (!meetingArgs.signature && meetingArgs.sdkSecret && meetingArgs.topic) {
     enforceVB: 0,
     web: '1'
   };
-  console.log('use url args');
+
+  console.log('🧪 Suggested test URL:');
   console.log(window.location.origin + '/?' + new URLSearchParams(urlArgs).toString());
 }
+
+// Ensure webEndpoint is always set
+if (!meetingArgs.webEndpoint) {
+  meetingArgs.webEndpoint = 'zoom.us';
+}
+
 const zmClient = ZoomVideo.createClient();
 const root = createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -93,7 +104,5 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// Optional performance reporting
 reportWebVitals();

@@ -1,0 +1,277 @@
+.
+├── CONTRIBUTING.md
+├── index.html
+├── LICENSE.md
+├── package-lock.json
+├── package.json
+├── project-tree.txt
+├── public
+│   ├── blur.png
+│   ├── favicon.ico
+│   ├── images
+│   │   └── videosdk.gif
+│   ├── index.html
+│   ├── logo.svg
+│   ├── manifest.json
+│   ├── moon.jpg
+│   ├── robots.txt
+│   └── zoom.svg
+├── readme.md
+├── src
+│   ├── App.css
+│   ├── App.test.js
+│   ├── App.tsx
+│   ├── component
+│   │   ├── audio-animation-icon.tsx
+│   │   ├── icon-font.tsx
+│   │   ├── loading-layer.scss
+│   │   ├── loading-layer.tsx
+│   │   └── svgs
+│   │       ├── audio
+│   │       │   ├── audio-disallow.svg
+│   │       │   ├── audio-muted.svg
+│   │       │   ├── audio-no-devices.svg
+│   │       │   ├── audio-unmuted.svg
+│   │       │   ├── audio-volume-level1.svg
+│   │       │   ├── audio-volume-level2.svg
+│   │       │   ├── audio-volume-level3.svg
+│   │       │   ├── audio-volume-level4.svg
+│   │       │   ├── audio-volume-level5.svg
+│   │       │   ├── audio-volume-level6.svg
+│   │       │   ├── audio-volume-level7.svg
+│   │       │   ├── audio-volume-level8.svg
+│   │       │   └── audio-volume-level9.svg
+│   │       ├── icon-advanced.svg
+│   │       ├── icon-audio-off.svg
+│   │       ├── icon-audio-on.svg
+│   │       ├── icon-channel.svg
+│   │       ├── icon-chat-upload.svg
+│   │       ├── icon-chat.svg
+│   │       ├── icon-control.svg
+│   │       ├── icon-correct-circle.svg
+│   │       ├── icon-correct.svg
+│   │       ├── icon-download.svg
+│   │       ├── icon-group.svg
+│   │       ├── icon-headset.svg
+│   │       ├── icon-leave.svg
+│   │       ├── icon-live-stream.svg
+│   │       ├── icon-live.svg
+│   │       ├── icon-loading.svg
+│   │       ├── icon-lt.svg
+│   │       ├── icon-meeting.svg
+│   │       ├── icon-move.svg
+│   │       ├── icon-network-bad.svg
+│   │       ├── icon-network-good.svg
+│   │       ├── icon-network-normal.svg
+│   │       ├── icon-pause.svg
+│   │       ├── icon-pending-circle.svg
+│   │       ├── icon-phone-off.svg
+│   │       ├── icon-phone.svg
+│   │       ├── icon-reconnect.svg
+│   │       ├── icon-recording-animated-hovered.svg
+│   │       ├── icon-recording-animated.svg
+│   │       ├── icon-recording-default.svg
+│   │       ├── icon-recording-hovered.svg
+│   │       ├── icon-recording-pause-hovered.svg
+│   │       ├── icon-recording-pause.svg
+│   │       ├── icon-recording-resume-hovered.svg
+│   │       ├── icon-recording-resume.svg
+│   │       ├── icon-recording-stop-hovered.svg
+│   │       ├── icon-recording-stop.svg
+│   │       ├── icon-remote-control.svg
+│   │       ├── icon-resume.svg
+│   │       ├── icon-share.svg
+│   │       ├── icon-spotlight.svg
+│   │       ├── icon-start.svg
+│   │       ├── icon-statistic.svg
+│   │       ├── icon-stop-leave.svg
+│   │       ├── icon-stop.svg
+│   │       ├── icon-subtitles.svg
+│   │       ├── icon-switch.svg
+│   │       ├── icon-warning-circle.svg
+│   │       └── participants
+│   │           ├── audio-muted.svg
+│   │           ├── audio-unmuted-animated.svg
+│   │           ├── audio-unmuted.svg
+│   │           ├── sharing-desktop-audio.svg
+│   │           ├── sharing-screen.svg
+│   │           ├── video-off.svg
+│   │           └── video-on.svg
+│   ├── config
+│   │   └── dev.ts
+│   ├── context
+│   │   ├── media-context.ts
+│   │   └── zoom-context.ts
+│   ├── feature
+│   │   ├── chat
+│   │   │   ├── chat-types.d.ts
+│   │   │   ├── chat-utils.ts
+│   │   │   ├── chat.scss
+│   │   │   ├── chat.tsx
+│   │   │   ├── component
+│   │   │   │   ├── chat-file-message-item.scss
+│   │   │   │   ├── chat-file-message-item.tsx
+│   │   │   │   ├── chat-image-message-item.scss
+│   │   │   │   ├── chat-image-message-item.tsx
+│   │   │   │   ├── chat-message-item.scss
+│   │   │   │   ├── chat-message-item.tsx
+│   │   │   │   ├── chat-receiver.scss
+│   │   │   │   └── chat-receiver.tsx
+│   │   │   └── hooks
+│   │   │       ├── useChat.ts
+│   │   │       └── useParticipantsChange.ts
+│   │   ├── command
+│   │   │   ├── cmd-types.d.ts
+│   │   │   ├── command.scss
+│   │   │   ├── command.tsx
+│   │   │   ├── component
+│   │   │   │   ├── cmd-message-item.scss
+│   │   │   │   ├── cmd-message-item.tsx
+│   │   │   │   ├── cmd-receiver.scss
+│   │   │   │   └── cmd-receiver.tsx
+│   │   │   └── hooks
+│   │   │       └── useParticipantsChange.ts
+│   │   ├── home
+│   │   │   ├── home.scss
+│   │   │   └── home.tsx
+│   │   ├── preview
+│   │   │   ├── preview.scss
+│   │   │   └── preview.tsx
+│   │   ├── subsession
+│   │   │   ├── component
+│   │   │   │   ├── broadcast-panel.scss
+│   │   │   │   ├── broadcast-panel.tsx
+│   │   │   │   ├── broadcast-voice-panel.tsx
+│   │   │   │   ├── draggable-modal.tsx
+│   │   │   │   ├── subsession-create.scss
+│   │   │   │   ├── subsession-create.tsx
+│   │   │   │   ├── subsession-item.scss
+│   │   │   │   ├── subsession-item.tsx
+│   │   │   │   ├── subsession-manage.scss
+│   │   │   │   ├── subsession-manage.tsx
+│   │   │   │   ├── subsession-options.scss
+│   │   │   │   └── subsession-options.tsx
+│   │   │   ├── hooks
+│   │   │   │   ├── useAskForHelp.ts
+│   │   │   │   ├── useBroadcastMessage.ts
+│   │   │   │   ├── useInviteJoinRoom.ts
+│   │   │   │   ├── useParticipantsChange.ts
+│   │   │   │   ├── useSubsession.ts
+│   │   │   │   ├── useSubsessionClosingCountdown.ts
+│   │   │   │   ├── useSubsessionCountdown.ts
+│   │   │   │   ├── useSubsessionOptions.ts
+│   │   │   │   └── useSubsessionTimeup.ts
+│   │   │   ├── subsession-constant.ts
+│   │   │   ├── subsession-types.d.ts
+│   │   │   ├── subsession-utils.ts
+│   │   │   ├── subsession.scss
+│   │   │   └── subsession.tsx
+│   │   └── video
+│   │       ├── components
+│   │       │   ├── audio-video-statistic.tsx
+│   │       │   ├── avatar-more.tsx
+│   │       │   ├── avatar.scss
+│   │       │   ├── avatar.tsx
+│   │       │   ├── call-out-modal.scss
+│   │       │   ├── call-out-modal.tsx
+│   │       │   ├── camera.tsx
+│   │       │   ├── crc-call-out-modal.tsx
+│   │       │   ├── draggable.tsx
+│   │       │   ├── leave.tsx
+│   │       │   ├── live-stream.tsx
+│   │       │   ├── live-transcription.tsx
+│   │       │   ├── microphone.tsx
+│   │       │   ├── pagination.scss
+│   │       │   ├── pagination.tsx
+│   │       │   ├── recording-ask-modal.scss
+│   │       │   ├── recording-ask-modal.tsx
+│   │       │   ├── recording.tsx
+│   │       │   ├── remote-camera-control.scss
+│   │       │   ├── remote-camera-control.tsx
+│   │       │   ├── report-btn.scss
+│   │       │   ├── report-btn.tsx
+│   │       │   ├── screen-share.tsx
+│   │       │   ├── self-view-container.tsx
+│   │       │   ├── share-bar.scss
+│   │       │   ├── share-bar.tsx
+│   │       │   ├── share-indication.scss
+│   │       │   ├── share-indication.tsx
+│   │       │   ├── share-view.scss
+│   │       │   ├── share-view.tsx
+│   │       │   ├── transcription-subtitle.scss
+│   │       │   ├── transcription-subtitle.tsx
+│   │       │   ├── video-footer-utils.ts
+│   │       │   ├── video-footer.scss
+│   │       │   ├── video-footer.tsx
+│   │       │   ├── video-mask-modal.scss
+│   │       │   └── video-mask-modal.tsx
+│   │       ├── context
+│   │       │   └── avatar-context.ts
+│   │       ├── hooks
+│   │       │   ├── useAttachPagination.ts
+│   │       │   ├── useAudioLevel.ts
+│   │       │   ├── useAvatarAction.ts
+│   │       │   ├── useAvtiveVideo.ts
+│   │       │   ├── useCameraControl.ts
+│   │       │   ├── useCanvasDimension.ts
+│   │       │   ├── useCleanUp.ts
+│   │       │   ├── useCurrentAudioLevel.ts
+│   │       │   ├── useGalleryLayout.ts
+│   │       │   ├── useLocalVolume.ts
+│   │       │   ├── useNetworkQuality.ts
+│   │       │   ├── usePagination.ts
+│   │       │   ├── useParticipantsChange.ts
+│   │       │   ├── useRemoteControl.tsx
+│   │       │   ├── useRenderVideo.ts
+│   │       │   ├── useShare.ts
+│   │       │   ├── useSpotlightVideo.ts
+│   │       │   └── useVideoAspectRatio.ts
+│   │       ├── video-attach.tsx
+│   │       ├── video-constants.ts
+│   │       ├── video-layout-helper.ts
+│   │       ├── video-single.tsx
+│   │       ├── video-types.d.ts
+│   │       ├── video.scss
+│   │       └── video.tsx
+│   ├── hooks
+│   │   ├── index.ts
+│   │   ├── useAnimationFrame.ts
+│   │   ├── useBackHome.ts
+│   │   ├── useDebounceFn.ts
+│   │   ├── useDragDrop.ts
+│   │   ├── useEventListener.ts
+│   │   ├── useHover.ts
+│   │   ├── useOrientation.ts
+│   │   ├── usePersistFn.ts
+│   │   ├── usePrevious.ts
+│   │   ├── useSizeCallback.ts
+│   │   └── useUnmount.ts
+│   ├── index-types.d.ts
+│   ├── index.css
+│   ├── index.tsx
+│   ├── logo.svg
+│   ├── processor
+│   │   ├── bypass-audio-processor.ts
+│   │   ├── pitch-shift-audio-processor.ts
+│   │   ├── watermark-processor.ts
+│   │   └── white-noise-audio-processor.ts
+│   ├── processor-types.d.ts
+│   ├── react-app-env.d.ts
+│   ├── reportWebVitals.js
+│   ├── setupTests.js
+│   ├── streaming-viewer
+│   │   ├── audio-video-statistic.tsx
+│   │   ├── context
+│   │   │   └── streaming-context.ts
+│   │   ├── index.tsx
+│   │   ├── streaming.scss
+│   │   └── StreamingApp.tsx
+│   ├── utils
+│   │   ├── platform.ts
+│   │   └── util.ts
+│   └── vite-env.d.ts
+├── streaming.html
+├── tsconfig.json
+└── vite.config.ts
+
+31 directories, 244 files
