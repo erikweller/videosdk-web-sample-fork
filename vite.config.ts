@@ -72,10 +72,12 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
+        
         main: resolve(__dirname, 'index.html'),
         streaming: resolve(__dirname, 'streaming.html'),
         ...processorsInput
       },
+      external: ['@zoom/videosdk'],
       output: {
         entryFileNames: (chunkInfo) => {
           if (chunkInfo.name === 'main' || chunkInfo.name === 'streaming') {
