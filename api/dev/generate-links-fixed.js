@@ -43,20 +43,76 @@ module.exports = async (req, res) => {
     });
 
     if (req.query?.format === 'html') {
-      const html = `
-        <html>
-          <head><title>Zoom Join Links</title></head>
-          <body>
-            <h1>🔗 Join Links for ${topic}</h1>
-            <ul>
-              ${links.map(({ name, url }) => `<li><a href="${url}" target="_blank">${name}</a></li>`).join('\n')}
-            </ul>
-          </body>
-        </html>
-      `;
-      res.setHeader('Content-Type', 'text/html');
-      return res.status(200).send(html);
-    }
+  const html = `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Zoom Join Links</title>
+        <style>
+          body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #f9fafb;
+            color: #111827;
+            padding: 40px;
+            line-height: 1.6;
+          }
+          h1 {
+            font-size: 1.8em;
+            margin-bottom: 0.5em;
+            color: #2563eb;
+          }
+          ul {
+            padding-left: 1em;
+          }
+          li {
+            margin: 0.5em 0;
+            font-size: 1.1em;
+          }
+          a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+          }
+          a:hover {
+            text-decoration: underline;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+          }
+          code {
+            font-size: 0.9em;
+            background: #f3f4f6;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>🔗 Zoom Join Links</h1>
+          <p><strong>Meeting Topic:</strong> <code>${topic}</code></p>
+          <ul>
+            ${links
+              .map(
+                ({ name, url }) =>
+                  `<li><strong>${name}:</strong> <a href="${url}" target="_blank">Join as ${name}</a></li>`
+              )
+              .join('\n')}
+          </ul>
+        </div>
+      </body>
+    </html>
+  `;
+  res.setHeader('Content-Type', 'text/html');
+  return res.status(200).send(html);
+}
+
 
     return res.status(200).json({ topic, links });
   } catch (e) {
