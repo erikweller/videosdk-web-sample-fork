@@ -77,10 +77,7 @@ export default defineConfig({
         streaming: resolve(__dirname, 'streaming.html'),
         ...processorsInput
       },
-      external: [
-        '@zoom/videosdk',
-        '@zoom/videosdk/broadcast-streaming' // ✅ THIS is the one that was crashing
-      ],
+      
 
       output: {
         entryFileNames: (chunkInfo) => {
