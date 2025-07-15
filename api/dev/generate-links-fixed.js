@@ -1,5 +1,3 @@
-
-
 const { KJUR } = require('jsrsasign');
 
 const SDK_KEY = process.env.ZOOM_SDK_KEY;
