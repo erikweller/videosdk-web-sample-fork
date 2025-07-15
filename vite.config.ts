@@ -77,8 +77,8 @@ export default defineConfig({
         streaming: resolve(__dirname, 'streaming.html'),
         ...processorsInput
       },
-      
 
+      external: ['@zoom/videosdk/broadcast-streaming'],
       output: {
         entryFileNames: (chunkInfo) => {
           if (chunkInfo.name === 'main' || chunkInfo.name === 'streaming') {
