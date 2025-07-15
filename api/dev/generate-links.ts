@@ -16,7 +16,7 @@ function generateSignature(topic: string, role: 0 | 1): string {
   const payload = {
     app_key: SDK_KEY,
     tpc: topic,
-    role,
+    role_type: role, // ✅ Note: Zoom Video SDK expects `role_type`, not just `role`
     iat,
     exp,
     tokenExp: exp
@@ -27,9 +27,9 @@ function generateSignature(topic: string, role: 0 | 1): string {
 
 export default function handler(req: VercelRequest, res: VercelResponse) {
   const topic = `cv-dev-meeting-${Date.now()}`;
-  const base = 'https://YOUR-DEPLOYED-DOMAIN.vercel.app/video'; // ← REPLACE with your live URL
+  const base = 'https://YOUR-DEPLOYED-DOMAIN.vercel.app/video'; // ← Replace with your domain
 
-  const participants = [
+  const participants: { name: string; role: 0 | 1 }[] = [
     { name: 'Erik Weller', role: 0 },
     { name: 'CareVillage: Lani Weller', role: 1 },
     { name: 'Lucian Weller', role: 0 },
