@@ -8,8 +8,10 @@
   display: flex;
   overflow-x: hidden;
   .video-container {
+    
     position: relative;
     width: 100%;
+    
     
     &.video-container-attech {
       display: flex;
@@ -24,6 +26,7 @@
       flex-shrink: 0;
     }
     &.single-video-container {
+      
       display: flex;
       align-items: center;
       justify-content: center;
@@ -89,13 +92,33 @@
           max-height: 100%;
           height: 100%;
           overflow: hidden;
+        
+          .corner-name {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin-left: 9rem;
+  margin-bottom: 1rem;
+  padding: 3px 5px;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  height: 25px;
+  font-size: 14px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 6px;
+  z-index: 5;
+}
+
         }
         .change-video-resolution {
           position: absolute;
         }
         .video-player {
-          display: block;
           border-radius: 16px;
+          border: 1px solid #ccc;
+          display: block;
           position: absolute;
           top: 0;
           left: 0;

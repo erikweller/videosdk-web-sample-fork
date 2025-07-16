@@ -69,7 +69,35 @@ const VideoContainer = () => {
           'video-container-in-sharing': isRecieveSharing
         })}
       >
-        <canvas className="video-canvas" id="video-canvas" width="800" height="600" ref={videoRef} />
+        {ZoomVideo.getSupportFeatures().videoElement || mediaStream?.isRenderSelfViewWithVideoElement() ? (
+  <video
+    id={SELF_VIDEO_ID}
+    className="self-video-tag"
+    playsInline
+    muted
+    autoPlay
+    style={{
+      display: 'block',
+      width: '100%',
+      height: '100%',
+      pointerEvents: 'none'
+    }}
+    ref={(el) => {
+      if (el && mediaStream && zmClient.getCurrentUserInfo()) {
+        mediaStream.attachVideo(el, zmClient.getCurrentUserInfo().userId);
+      }
+    }}
+  />
+) : (
+  <canvas
+    className="video-canvas"
+    id="video-canvas"
+    width="800"
+    height="600"
+    ref={videoRef}
+  />
+)}
+
         {selfVideoLayout && mediaStream?.isRenderSelfViewWithVideoElement() && (
           <video
             id={SELF_VIDEO_ID}
